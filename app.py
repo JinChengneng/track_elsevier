@@ -19,7 +19,4 @@ def index():
                          manuscript_data=manuscript_data, 
                          format_timestamp=format_timestamp,
                          process_review_timeline=process_review_timeline,
-                         error=error)
-
-if __name__ == '__main__':
-    app.run(debug=True) 
+                         error=error) 
