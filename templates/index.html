@@ -81,7 +81,7 @@
                     <li class="list-group-item"><strong>Total Reviewers Invited:</strong> 
                         {{ manuscript_data.ReviewEvents | selectattr('Event', 'equalto', 'REVIEWER_INVITED') | map(attribute='Id') | unique | list | length }}
                     </li>
-                    <li class="list-group-item"><strong>Accepted Reviews:</strong>
+                    <li class="list-group-item"><strong>Accepted Reviewers:</strong>
                         {{ manuscript_data.ReviewEvents | selectattr('Event', 'equalto', 'REVIEWER_ACCEPTED') | map(attribute='Id') | unique | list | length }}
                     </li>
                 </ul>
@@ -90,7 +90,23 @@
                 {% for timeline in process_review_timeline(manuscript_data.ReviewEvents) %}
                 <div class="card mb-3">
                     <div class="card-header">
-                        <h5 class="mb-0">Revision {{ timeline.revision }}</h5>
+                        <h5 class="mb-0">
+                            {% if timeline.revision == 0 %}
+                                Initial Submission
+                            {% else %}
+                                {% set ordinal = timeline.revision ~ 
+                                    ('st' if timeline.revision == 1 else 
+                                     'nd' if timeline.revision == 2 else 
+                                     'rd' if timeline.revision == 3 else 'th') %}
+                                {{ ordinal }} Revision
+                            {% endif %}
+                        </h5>
+                        <div class="mt-2 text-muted">
+                            <small>
+                                Total Reviewers Invited: {{ timeline.reviewers|length }} | 
+                                Accepted Reviewers: {{ timeline.reviewers|selectattr('accepted')|list|length }}
+                            </small>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
