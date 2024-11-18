@@ -86,41 +86,51 @@
                     </li>
                 </ul>
 
-                <h4>Reviewer Timeline</h4>
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Reviewer ID</th>
-                                <th>Invited Time</th>
-                                <th>Accepted Time</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for reviewer in process_review_timeline(manuscript_data.ReviewEvents) %}
-                            <tr>
-                                <td>{{ reviewer.id }}</td>
-                                <td>{{ format_timestamp(reviewer.invited) if reviewer.invited else 'N/A' }}</td>
-                                <td>{{ format_timestamp(reviewer.accepted) if reviewer.accepted else 'N/A' }}</td>
-                                <td>
-                                    {% if reviewer.accepted %}
-                                        <span class="badge bg-success">Accepted</span>
-                                    {% else %}
-                                        <span class="badge bg-warning text-dark">Pending</span>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                <h4>Reviewer Timeline by Revision</h4>
+                {% for timeline in process_review_timeline(manuscript_data.ReviewEvents) %}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="mb-0">Revision {{ timeline.revision }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Reviewer ID</th>
+                                        <th>Invited Time</th>
+                                        <th>Accepted Time</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for reviewer in timeline.reviewers %}
+                                    <tr>
+                                        <td>{{ reviewer.id }}</td>
+                                        <td>{{ format_timestamp(reviewer.invited) if reviewer.invited else 'N/A' }}</td>
+                                        <td>{{ format_timestamp(reviewer.accepted) if reviewer.accepted else 'N/A' }}</td>
+                                        <td>
+                                            {% if reviewer.accepted %}
+                                                <span class="badge bg-success">Accepted</span>
+                                            {% else %}
+                                                <span class="badge bg-warning text-dark">Pending</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
+                {% endfor %}
 
                 <h4>Detailed Timeline</h4>
                 <ul class="list-group">
                     {% for event in manuscript_data.ReviewEvents | sort(attribute='Date') %}
                     <li class="list-group-item">
-                        {{ format_timestamp(event.Date) }}: {{ event.Event }} (ID: {{ event.Id }})
+                        {{ format_timestamp(event.Date) }}: {{ event.Event }} 
+                        (ID: {{ event.Id }}, Revision: {{ event.Revision }})
                     </li>
                     {% endfor %}
                 </ul>

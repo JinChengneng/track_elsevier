@@ -17,28 +17,46 @@ def get_manuscript_info(uuid):
         return None
 
 def process_review_timeline(events):
-    timeline = {}
+    # Group events by revision first
+    revision_timelines = {}
+    
     for event in events:
+        revision = event['Revision']
         reviewer_id = event['Id']
-        if reviewer_id not in timeline:
-            timeline[reviewer_id] = {'invited': None, 'accepted': None}
+        
+        if revision not in revision_timelines:
+            revision_timelines[revision] = {}
+            
+        if reviewer_id not in revision_timelines[revision]:
+            revision_timelines[revision][reviewer_id] = {'invited': None, 'accepted': None}
         
         if event['Event'] == 'REVIEWER_INVITED':
-            timeline[reviewer_id]['invited'] = event['Date']
+            revision_timelines[revision][reviewer_id]['invited'] = event['Date']
         elif event['Event'] == 'REVIEWER_ACCEPTED':
-            timeline[reviewer_id]['accepted'] = event['Date']
+            revision_timelines[revision][reviewer_id]['accepted'] = event['Date']
     
-    # Convert to list of dictionaries
-    timeline_list = [
-        {
-            'id': reviewer_id,
-            'invited': data['invited'],
-            'accepted': data['accepted']
-        }
-        for reviewer_id, data in timeline.items()
-    ]
+    # Convert to structured format
+    processed_timelines = []
     
-    # Sort by invited time and then by reviewer ID
-    return sorted(timeline_list, 
-                 key=lambda x: (x['invited'] if x['invited'] is not None else float('inf'), 
-                              x['id']))
+    for revision, timeline in sorted(revision_timelines.items()):
+        reviewer_list = [
+            {
+                'id': reviewer_id,
+                'invited': data['invited'],
+                'accepted': data['accepted']
+            }
+            for reviewer_id, data in timeline.items()
+        ]
+        
+        # Sort reviewers by invited time and then by reviewer ID
+        sorted_reviewers = sorted(
+            reviewer_list,
+            key=lambda x: (x['invited'] if x['invited'] is not None else float('inf'), x['id'])
+        )
+        
+        processed_timelines.append({
+            'revision': revision,
+            'reviewers': sorted_reviewers
+        })
+    
+    return processed_timelines
