@@ -34,6 +34,53 @@
             color: #495057;
             text-decoration: underline;
         }
+        .input-group .form-control:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+            z-index: 1;
+        }
+        
+        .input-group .input-group-text {
+            border-right: 0;
+            color: #6c757d;
+        }
+        
+        .input-group .form-control {
+            font-size: 1rem;
+        }
+        
+        .input-group .btn {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        
+        .btn-lg {
+            padding: 0.75rem 1.5rem;
+        }
+        
+        .table th,
+        .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        .table .badge {
+            min-width: 100px;
+        }
+        
+        .table thead th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            white-space: nowrap;
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        
+        .table .bi {
+            vertical-align: -0.125em;
+        }
     </style>
 </head>
 <body>
@@ -85,10 +132,25 @@
         
         <form method="POST" class="mb-4">
             <div class="mb-3">
-                <label for="uuid" class="form-label">Enter Manuscript UUID:</label>
-                <input type="text" class="form-control" id="uuid" name="uuid" required>
+                <div class="input-group input-group-lg">
+                    <span class="input-group-text bg-white">
+                        <i class="bi bi-key"></i>
+                    </span>
+                    <input type="text" 
+                           class="form-control border-start-0" 
+                           id="uuid" 
+                           name="uuid" 
+                           placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+                           required>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search me-2"></i>Track Manuscript
+                    </button>
+                </div>
+                <div class="form-text text-muted">
+                    <i class="bi bi-info-circle-fill me-1"></i>
+                    Enter the UUID from your manuscript tracking link
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Track Manuscript</button>
         </form>
 
         {% if error %}
@@ -181,7 +243,7 @@
                     </div>
                     <div class="card-body">
                         {% for timeline in process_review_timeline(manuscript_data.ReviewEvents) %}
-                        <div class="mb-4">
+                        <div class="{% if not loop.last %}mb-4{% endif %}">
                             <div class="d-flex align-items-center mb-3">
                                 <div class="bg-light rounded-circle p-2 me-2">
                                     <i class="bi bi-journal-text"></i>
@@ -190,49 +252,37 @@
                                     {% if timeline.revision == 0 %}
                                         Initial Submission
                                     {% else %}
-                                        {% set ordinal = timeline.revision ~ 
-                                            ('st' if timeline.revision == 1 else 
-                                             'nd' if timeline.revision == 2 else 
-                                             'rd' if timeline.revision == 3 else 'th') %}
-                                        {{ ordinal }} Revision
+                                        {{ timeline.revision }}{{ 
+                                            'st' if timeline.revision == 1 else 
+                                            'nd' if timeline.revision == 2 else 
+                                            'rd' if timeline.revision == 3 else 'th' 
+                                        }} Revision
                                     {% endif %}
                                 </h6>
                             </div>
-                            <div class="row text-center g-3">
+                            <div class="row g-3">
                                 <div class="col-md-4">
-                                    <div class="bg-light rounded p-3 h-100">
-                                        <div class="d-flex flex-column h-100">
-                                            <div class="text-muted small mb-2">
-                                                <i class="bi bi-people me-1"></i>Total Reviewers Invited
-                                            </div>
-                                            <h3 class="mb-0 text-secondary">
-                                                {{ timeline.reviewers|length }}
-                                            </h3>
+                                    <div class="bg-light rounded p-3 text-center h-100">
+                                        <div class="text-muted mb-2">
+                                            <i class="bi bi-people me-1"></i>Invited
                                         </div>
+                                        <h3 class="mb-0 text-secondary">{{ timeline.reviewers|length }}</h3>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="bg-light rounded p-3 h-100">
-                                        <div class="d-flex flex-column h-100">
-                                            <div class="text-muted small mb-2">
-                                                <i class="bi bi-person-check me-1"></i>Accepted Reviewers
-                                            </div>
-                                            <h3 class="mb-0" style="color: #ffc107;">
-                                                {{ timeline.reviewers|selectattr('accepted')|list|length }}
-                                            </h3>
+                                    <div class="bg-light rounded p-3 text-center h-100">
+                                        <div class="text-muted mb-2">
+                                            <i class="bi bi-check-circle me-1"></i>Accepted
                                         </div>
+                                        <h3 class="mb-0 text-warning">{{ timeline.reviewers|selectattr('accepted')|list|length }}</h3>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="bg-light rounded p-3 h-100">
-                                        <div class="d-flex flex-column h-100">
-                                            <div class="text-muted small mb-2">
-                                                <i class="bi bi-check-circle me-1"></i>Completed Reviewers
-                                            </div>
-                                            <h3 class="mb-0 text-success">
-                                                {{ timeline.reviewers|selectattr('completed')|list|length }}
-                                            </h3>
+                                    <div class="bg-light rounded p-3 text-center h-100">
+                                        <div class="text-muted mb-2">
+                                            <i class="bi bi-flag-fill me-1"></i>Completed
                                         </div>
+                                        <h3 class="mb-0 text-success">{{ timeline.reviewers|selectattr('completed')|list|length }}</h3>
                                     </div>
                                 </div>
                             </div>
