@@ -84,6 +84,9 @@
                     <li class="list-group-item"><strong>Accepted Reviewers:</strong>
                         {{ manuscript_data.ReviewEvents | selectattr('Event', 'equalto', 'REVIEWER_ACCEPTED') | map(attribute='Id') | unique | list | length }}
                     </li>
+                    <li class="list-group-item"><strong>Completed Reviewers:</strong>
+                        {{ manuscript_data.ReviewEvents | selectattr('Event', 'equalto', 'REVIEWER_COMPLETED') | map(attribute='Id') | unique | list | length }}
+                    </li>
                 </ul>
 
                 <h4>Reviewer Timeline by Revision</h4>
@@ -104,7 +107,8 @@
                         <div class="mt-2 text-muted">
                             <small>
                                 Total Reviewers Invited: {{ timeline.reviewers|length }} | 
-                                Accepted Reviewers: {{ timeline.reviewers|selectattr('accepted')|list|length }}
+                                Accepted Reviewers: {{ timeline.reviewers|selectattr('accepted')|list|length }} |
+                                Completed Reviewers: {{ timeline.reviewers|selectattr('completed')|list|length }}
                             </small>
                         </div>
                     </div>
@@ -116,6 +120,7 @@
                                         <th>Reviewer ID</th>
                                         <th>Invited Time</th>
                                         <th>Accepted Time</th>
+                                        <th>Completed Time</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -125,11 +130,14 @@
                                         <td>{{ reviewer.id }}</td>
                                         <td>{{ format_timestamp(reviewer.invited) if reviewer.invited else 'N/A' }}</td>
                                         <td>{{ format_timestamp(reviewer.accepted) if reviewer.accepted else 'N/A' }}</td>
+                                        <td>{{ format_timestamp(reviewer.completed) if reviewer.completed else 'N/A' }}</td>
                                         <td>
-                                            {% if reviewer.accepted %}
-                                                <span class="badge bg-success">Accepted</span>
+                                            {% if reviewer.completed %}
+                                                <span class="badge bg-success">Completed</span>
+                                            {% elif reviewer.accepted %}
+                                                <span class="badge bg-warning text-dark">Accepted</span>
                                             {% else %}
-                                                <span class="badge bg-warning text-dark">Pending</span>
+                                                <span class="badge bg-secondary">Pending</span>
                                             {% endif %}
                                         </td>
                                     </tr>

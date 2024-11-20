@@ -28,12 +28,18 @@ def process_review_timeline(events):
             revision_timelines[revision] = {}
             
         if reviewer_id not in revision_timelines[revision]:
-            revision_timelines[revision][reviewer_id] = {'invited': None, 'accepted': None}
+            revision_timelines[revision][reviewer_id] = {
+                'invited': None, 
+                'accepted': None,
+                'completed': None  # Add completed field
+            }
         
         if event['Event'] == 'REVIEWER_INVITED':
             revision_timelines[revision][reviewer_id]['invited'] = event['Date']
         elif event['Event'] == 'REVIEWER_ACCEPTED':
             revision_timelines[revision][reviewer_id]['accepted'] = event['Date']
+        elif event['Event'] == 'REVIEWER_COMPLETED':  # Add handling for completed event
+            revision_timelines[revision][reviewer_id]['completed'] = event['Date']
     
     # Convert to structured format
     processed_timelines = []
@@ -43,7 +49,8 @@ def process_review_timeline(events):
             {
                 'id': reviewer_id,
                 'invited': data['invited'],
-                'accepted': data['accepted']
+                'accepted': data['accepted'],
+                'completed': data['completed']  # Add completed to output
             }
             for reviewer_id, data in timeline.items()
         ]
