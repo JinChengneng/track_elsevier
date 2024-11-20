@@ -14,7 +14,7 @@
             flex-direction: column;
         }
         .container { 
-            max-width: 800px;
+            max-width: 850px;
             flex: 1;
         }
         .footer {
@@ -40,13 +40,47 @@
     <div class="container">
         <h1 class="mb-4">Elsevier Manuscript Tracker</h1>
         
-        <div class="alert alert-info mb-4">
-            <h4 class="alert-heading">How to Find Your UUID?</h4>
-            <p class="mb-0">
-                Ask your manuscript's corresponding author for the tracking link. The link should look like:<br>
-                <code>https://track.authorhub.elsevier.com/?uuid=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</code><br>
-                Copy the UUID part (after "uuid=") and paste it into the form below.
-            </p>
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <div class="d-flex align-items-center">
+                    <div class="bg-light rounded-circle p-2 me-2">
+                        <i class="bi bi-question-circle"></i>
+                    </div>
+                    <h4 class="mb-0">How to Find Your UUID?</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex align-items-start mb-3">
+                    <div class="bg-light rounded-circle p-2 me-3">
+                        <i class="bi bi-1-circle"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-2">Ask for the tracking link</h6>
+                        <p class="mb-0 text-muted">Contact your manuscript's corresponding author for the tracking link.</p>
+                    </div>
+                </div>
+                
+                <div class="d-flex align-items-start mb-3">
+                    <div class="bg-light rounded-circle p-2 me-3">
+                        <i class="bi bi-2-circle"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-2">Locate the UUID</h6>
+                        <p class="mb-0 text-muted">The link should look like:</p>
+                        <code class="d-block bg-light p-2 mt-2 rounded">https://track.authorhub.elsevier.com/?uuid=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</code>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start">
+                    <div class="bg-light rounded-circle p-2 me-3">
+                        <i class="bi bi-3-circle"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-2">Enter the UUID</h6>
+                        <p class="mb-0 text-muted">Copy the UUID part (after "uuid=") and paste it into the form below.</p>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <form method="POST" class="mb-4">
@@ -63,82 +97,199 @@
 
         {% if manuscript_data %}
         <div class="manuscript-info">
-            <h2>Manuscript Information</h2>
+            <div class="d-flex align-items-center mb-3">
+                <div class="bg-light rounded-circle p-2 me-2">
+                    <i class="bi bi-file-text"></i>
+                </div>
+                <h3 class="mb-0">Manuscript Information</h3>
+            </div>
             
-            <h3>Basic Information</h3>
-            <ul class="list-group mb-4">
-                <li class="list-group-item"><strong>Title:</strong> {{ manuscript_data.ManuscriptTitle }}</li>
-                <li class="list-group-item"><strong>Publication Number:</strong> {{ manuscript_data.PubdNumber }}</li>
-                <li class="list-group-item"><strong>Journal:</strong> {{ manuscript_data.JournalName }} ({{ manuscript_data.JournalAcronym }})</li>
-                <li class="list-group-item"><strong>Submission Date:</strong> {{ format_timestamp(manuscript_data.SubmissionDate) }}</li>
-                <li class="list-group-item"><strong>First Author:</strong> {{ manuscript_data.FirstAuthor }}</li>
-                <li class="list-group-item"><strong>Corresponding Author:</strong> {{ manuscript_data.CorrespondingAuthor }}</li>
-            </ul>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <div class="bg-light rounded p-3">
+                                <div class="text-muted small mb-1">
+                                    <i class="bi bi-bookmark me-1"></i>Title
+                                </div>
+                                <div class="h5 mb-0">{{ manuscript_data.ManuscriptTitle }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-light rounded p-3 h-100">
+                                <div class="text-muted small mb-1">
+                                    <i class="bi bi-hash me-1"></i>Publication Number
+                                </div>
+                                <div class="h6 mb-0">{{ manuscript_data.PubdNumber }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-light rounded p-3 h-100">
+                                <div class="text-muted small mb-1">
+                                    <i class="bi bi-journal me-1"></i>Journal
+                                </div>
+                                <div class="h6 mb-0">{{ manuscript_data.JournalName }} ({{ manuscript_data.JournalAcronym }})</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="bg-light rounded p-3 h-100">
+                                <div class="text-muted small mb-1">
+                                    <i class="bi bi-calendar me-1"></i>Submission Date
+                                </div>
+                                <div class="h6 mb-0">{{ format_timestamp(manuscript_data.SubmissionDate) }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="bg-light rounded p-3 h-100">
+                                <div class="text-muted small mb-1">
+                                    <i class="bi bi-person me-1"></i>First Author
+                                </div>
+                                <div class="h6 mb-0">{{ manuscript_data.FirstAuthor }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="bg-light rounded p-3 h-100">
+                                <div class="text-muted small mb-1">
+                                    <i class="bi bi-person-badge me-1"></i>Corresponding Author
+                                </div>
+                                <div class="h6 mb-0">{{ manuscript_data.CorrespondingAuthor }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            <h3>Review Timeline</h3>
+            <div class="d-flex align-items-center mb-3">
+                <div class="bg-light rounded-circle p-2 me-2">
+                    <i class="bi bi-clock-history"></i>
+                </div>
+                <h3 class="mb-0">Review Timeline</h3>
+            </div>
+
             <div class="mb-4">
-                <h4>Summary</h4>
-                <ul class="list-group mb-3">
-                    <li class="list-group-item"><strong>Last Updated:</strong> {{ format_timestamp(manuscript_data.LastUpdated) }}</li>
-                    <li class="list-group-item"><strong>Total Reviewers Invited:</strong> 
-                        {{ manuscript_data.ReviewEvents | selectattr('Event', 'equalto', 'REVIEWER_INVITED') | map(attribute='Id') | unique | list | length }}
-                    </li>
-                    <li class="list-group-item"><strong>Accepted Reviewers:</strong>
-                        {{ manuscript_data.ReviewEvents | selectattr('Event', 'equalto', 'REVIEWER_ACCEPTED') | map(attribute='Id') | unique | list | length }}
-                    </li>
-                    <li class="list-group-item"><strong>Completed Reviewers:</strong>
-                        {{ manuscript_data.ReviewEvents | selectattr('Event', 'equalto', 'REVIEWER_COMPLETED') | map(attribute='Id') | unique | list | length }}
-                    </li>
-                </ul>
-
-                {% for timeline in process_review_timeline(manuscript_data.ReviewEvents) %}
                 <div class="card mb-3">
-                    <div class="card-header">
-                        <h5 class="mb-0">
-                            {% if timeline.revision == 0 %}
-                                Initial Submission
-                            {% else %}
-                                {% set ordinal = timeline.revision ~ 
-                                    ('st' if timeline.revision == 1 else 
-                                     'nd' if timeline.revision == 2 else 
-                                     'rd' if timeline.revision == 3 else 'th') %}
-                                {{ ordinal }} Revision
-                            {% endif %}
-                        </h5>
-                        <div class="mt-2 text-muted">
-                            <small>
-                                Total Reviewers Invited: {{ timeline.reviewers|length }} | 
-                                Accepted Reviewers: {{ timeline.reviewers|selectattr('accepted')|list|length }} |
-                                Completed Reviewers: {{ timeline.reviewers|selectattr('completed')|list|length }}
+                    <div class="card-header bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="bi bi-graph-up me-2"></i>Review Summary
+                            </h5>
+                            <small class="text-muted">
+                                <i class="bi bi-clock me-1"></i>
+                                Last Updated: {{ format_timestamp(manuscript_data.LastUpdated) }}
                             </small>
                         </div>
                     </div>
                     <div class="card-body">
+                        {% for timeline in process_review_timeline(manuscript_data.ReviewEvents) %}
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-light rounded-circle p-2 me-2">
+                                    <i class="bi bi-journal-text"></i>
+                                </div>
+                                <h6 class="mb-0">
+                                    {% if timeline.revision == 0 %}
+                                        Initial Submission
+                                    {% else %}
+                                        {% set ordinal = timeline.revision ~ 
+                                            ('st' if timeline.revision == 1 else 
+                                             'nd' if timeline.revision == 2 else 
+                                             'rd' if timeline.revision == 3 else 'th') %}
+                                        {{ ordinal }} Revision
+                                    {% endif %}
+                                </h6>
+                            </div>
+                            <div class="row text-center g-3">
+                                <div class="col-md-4">
+                                    <div class="bg-light rounded p-3 h-100">
+                                        <div class="d-flex flex-column h-100">
+                                            <div class="text-muted small mb-2">
+                                                <i class="bi bi-people me-1"></i>Total Reviewers Invited
+                                            </div>
+                                            <h3 class="mb-0 text-secondary">
+                                                {{ timeline.reviewers|length }}
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="bg-light rounded p-3 h-100">
+                                        <div class="d-flex flex-column h-100">
+                                            <div class="text-muted small mb-2">
+                                                <i class="bi bi-person-check me-1"></i>Accepted Reviewers
+                                            </div>
+                                            <h3 class="mb-0" style="color: #ffc107;">
+                                                {{ timeline.reviewers|selectattr('accepted')|list|length }}
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="bg-light rounded p-3 h-100">
+                                        <div class="d-flex flex-column h-100">
+                                            <div class="text-muted small mb-2">
+                                                <i class="bi bi-check-circle me-1"></i>Completed Reviewers
+                                            </div>
+                                            <h3 class="mb-0 text-success">
+                                                {{ timeline.reviewers|selectattr('completed')|list|length }}
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if not loop.last %}
+                            <hr class="my-4">
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% for timeline in process_review_timeline(manuscript_data.ReviewEvents) %}
+                <div class="card mb-3">
+                    <div class="card-header bg-light">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-light rounded-circle p-2 me-2">
+                                <i class="bi bi-journal-text"></i>
+                            </div>
+                            <h5 class="mb-0">
+                                {% if timeline.revision == 0 %}
+                                    Initial Submission
+                                {% else %}
+                                    {% set ordinal = timeline.revision ~ 
+                                        ('st' if timeline.revision == 1 else 
+                                         'nd' if timeline.revision == 2 else 
+                                         'rd' if timeline.revision == 3 else 'th') %}
+                                    {{ ordinal }} Revision
+                                {% endif %}
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered">
-                                <thead>
+                            <table class="table table-hover">
+                                <thead class="table-light">
                                     <tr>
-                                        <th>Reviewer ID</th>
-                                        <th>Invited Time</th>
-                                        <th>Accepted Time</th>
-                                        <th>Completed Time</th>
-                                        <th>Status</th>
+                                        <th class="text-nowrap"><i class="bi bi-person-badge me-1"></i>Reviewer ID</th>
+                                        <th class="text-nowrap"><i class="bi bi-envelope me-1"></i>Invited Time</th>
+                                        <th class="text-nowrap"><i class="bi bi-check-circle me-1"></i>Accepted Time</th>
+                                        <th class="text-nowrap"><i class="bi bi-flag me-1"></i>Completed Time</th>
+                                        <th class="text-nowrap"><i class="bi bi-info-circle me-1"></i>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for reviewer in timeline.reviewers %}
                                     <tr>
-                                        <td>{{ reviewer.id }}</td>
-                                        <td>{{ format_timestamp(reviewer.invited) if reviewer.invited else 'N/A' }}</td>
-                                        <td>{{ format_timestamp(reviewer.accepted) if reviewer.accepted else 'N/A' }}</td>
-                                        <td>{{ format_timestamp(reviewer.completed) if reviewer.completed else 'N/A' }}</td>
+                                        <td class="text-nowrap">{{ reviewer.id }}</td>
+                                        <td class="text-nowrap">{{ format_timestamp(reviewer.invited) if reviewer.invited else 'N/A' }}</td>
+                                        <td class="text-nowrap">{{ format_timestamp(reviewer.accepted) if reviewer.accepted else 'N/A' }}</td>
+                                        <td class="text-nowrap">{{ format_timestamp(reviewer.completed) if reviewer.completed else 'N/A' }}</td>
                                         <td>
                                             {% if reviewer.completed %}
-                                                <span class="badge bg-success">Completed</span>
+                                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Completed</span>
                                             {% elif reviewer.accepted %}
-                                                <span class="badge bg-warning text-dark">Accepted</span>
+                                                <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i>Accepted</span>
                                             {% else %}
-                                                <span class="badge bg-secondary">Pending</span>
+                                                <span class="badge bg-secondary"><i class="bi bi-clock me-1"></i>Pending</span>
                                             {% endif %}
                                         </td>
                                     </tr>
